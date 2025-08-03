@@ -5,6 +5,10 @@ import FolderComponent from "@/components/landing/folder-comp";
 export default function Home() {
 	return (
 		<div className='bg-background justify-center flex h-full min-h-dvh w-full flex-col items-center bg-[url("/tron-image-2.png")] bg-cover bg-fixed bg-center bg-no-repeat'>
+			<div className="fixed w-full left-0 right-0 top-10 text-center">
+				Gianfranco Milli
+			</div>
+
 			<div className="flex flex-row">
 				<FolderComponent
 					href="/photography"
@@ -13,17 +17,17 @@ export default function Home() {
 				/>
 				<FolderComponent
 					href="/paintings"
-					hoverImgSrc="https://picsum.photos/400/300"
+					hoverImgSrc="/photography/abstract/miami-2.jpg"
 					folderName="Paintings"
 				/>
 				<FolderComponent
 					href="/modeling"
-					hoverImgSrc="https://picsum.photos/400/300"
+					hoverImgSrc="/photography/abstract/miami-2.jpg"
 					folderName="Modeling"
 				/>
 				<FolderComponent
 					href="/exhibitions"
-					hoverImgSrc="https://picsum.photos/400/300"
+					hoverImgSrc="/photography/abstract/miami-2.jpg"
 					folderName="Exhibitions"
 				/>
 			</div>
