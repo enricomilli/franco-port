@@ -4,6 +4,7 @@ import { useStaticImage } from "@/lib/useStaticImage";
 import { Media } from "@/payload-types";
 import { FolderClosed, FolderOpen } from "lucide-react";
 import Image from "next/image";
+import Link from "next/link";
 import { useState } from "react";
 import { Button } from "../ui/button";
 import {
@@ -36,54 +37,61 @@ export default function FolderComponent({
 	});
 
 	return (
-		<HoverCard openDelay={100} closeDelay={0}>
-			<HoverCardTrigger className="w-full h-full" href={href}>
-				<Button
-					onMouseEnter={() => setImageHovered(true)}
-					onMouseLeave={() => setImageHovered(false)}
-					variant={"ghost"}
-					className="flex flex-col cursor-pointer min-w-22 max-w-32 min-h-24 h-full w-full p-0 "
+		<Link href={href}>
+			<HoverCard openDelay={100} closeDelay={0}>
+				<HoverCardTrigger
+					asChild
+					role="div"
+					href={undefined}
+					className="w-full h-full"
 				>
-					{!imageHovered &&
-						(folderIcon.src ? (
-							<Image
-								src={folderIcon.src}
-								alt="Folder"
-								width={60}
-								height={60}
-								className="object-contain stroke-primary [&>svg]:stroke-primary"
-							/>
-						) : (
-							<FolderClosed className="size-12" />
-						))}
-					{imageHovered &&
-						(folderOpenIcon.src ? (
-							<Image
-								src={folderOpenIcon.src}
-								alt="Open Folder"
-								width={60}
-								height={60}
-								className="object-contain [&>svg]:stroke-primary"
-							/>
-						) : (
-							<FolderOpen className="size-12" />
-						))}
+					<Button
+						onMouseEnter={() => setImageHovered(true)}
+						onMouseLeave={() => setImageHovered(false)}
+						variant={"ghost"}
+						className="flex flex-col cursor-pointer min-w-22 max-w-32 min-h-24 h-full w-full p-0 "
+					>
+						{!imageHovered &&
+							(folderIcon.src ? (
+								<Image
+									src={folderIcon.src}
+									alt="Folder"
+									width={60}
+									height={60}
+									className="object-contain stroke-primary [&>svg]:stroke-primary"
+								/>
+							) : (
+								<FolderClosed className="size-12" />
+							))}
+						{imageHovered &&
+							(folderOpenIcon.src ? (
+								<Image
+									src={folderOpenIcon.src}
+									alt="Open Folder"
+									width={60}
+									height={60}
+									className="object-contain [&>svg]:stroke-primary"
+								/>
+							) : (
+								<FolderOpen className="size-12" />
+							))}
 
-					<h2 className="min-w-10 max-w-[80px] text-wrap">{folderName}</h2>
-				</Button>
-			</HoverCardTrigger>
-			<HoverCardContent className="w-fit">
-				<Image
-					width={200}
-					height={200}
-					src={
-						typeof hoverImgSrc === "string"
-							? hoverImgSrc
-							: getMediaUrl(hoverImgSrc) || "https://picsum.photos/400/300"
-					}
-					alt={hoverImgAlt ?? "hoverable image popup"}
-				/>
-			</HoverCardContent>
-		</HoverCard>
+						<h2 className="min-w-10 max-w-[80px] text-wrap">{folderName}</h2>
+					</Button>
+				</HoverCardTrigger>
+				<HoverCardContent className="w-fit">
+					<Image
+						width={200}
+						height={200}
+						src={
+							typeof hoverImgSrc === "string"
+								? hoverImgSrc
+								: getMediaUrl(hoverImgSrc) || "https://picsum.photos/400/300"
+						}
+						alt={hoverImgAlt ?? "hoverable image popup"}
+					/>
+				</HoverCardContent>
+			</HoverCard>
+		</Link>
 	);
 }

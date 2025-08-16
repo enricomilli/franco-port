@@ -4,14 +4,17 @@ import GalleryComponent, {
 	ImageInGallery,
 } from "@/components/gallery/gallery-comp";
 import FolderComponent from "@/components/landing/folder-comp";
+import { Button } from "@/components/ui/button";
+import LandingSkeleton from "@/components/ui/loading/landing-loading";
 import { getFolderByPath, transformGalleryImages } from "@/lib/api";
 import { Folder, Gallery, Media } from "@/payload-types";
-import { Loader2 } from "lucide-react";
-import { useParams } from "next/navigation";
+import { ArrowLeft } from "lucide-react";
+import { useParams, useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 
 export default function DynamicFolderPage() {
 	const params = useParams();
+	const router = useRouter();
 	const [loading, setLoading] = useState(true);
 	const [error, setError] = useState<string | null>(null);
 	const [folderData, setFolderData] = useState<Folder | null>(null);
@@ -81,10 +84,11 @@ export default function DynamicFolderPage() {
 	return (
 		<>
 			{loading ? (
-				<div className="flex flex-col items-center justify-center">
-					<Loader2 className="size-12 animate-spin text-white" />
-					<p className="mt-4 text-white">Loading...</p>
-				</div>
+				// <div className="flex flex-col items-center justify-center">
+				// 	<Loader2 className="size-12 animate-spin text-white" />
+				// 	<p className="mt-4 text-white">Loading...</p>
+				// </div>
+				<LandingSkeleton />
 			) : error ? (
 				<div className="mx-auto max-w-md rounded-lg bg-red-500/20 p-4 text-center text-white">
 					<h2 className="text-xl font-bold">Error</h2>
@@ -101,10 +105,20 @@ export default function DynamicFolderPage() {
 					{/* Subfolders */}
 					{subfolders && subfolders.length > 0 && (
 						<>
-							<div className="mb-8 text-center">
-								<h1 className="text-xl font-bold text-primary">
+							<div className="mb-3 flex flex-row gap-2 items-center text-center">
+								<Button
+									variant={"outline"}
+									size={"sm"}
+									className="rounded-full backdrop-blur-2xl cursor-pointer"
+									onClick={() => router.back()}
+								>
+									<ArrowLeft />
+								</Button>
+
+								<h1 className="text-2xl font-bold text-primary">
 									{folderData?.name}
 								</h1>
+								<div className="w-2"></div>
 							</div>
 
 							<div className="flex flex-row flex-wrap justify-center gap-4">
@@ -123,11 +137,22 @@ export default function DynamicFolderPage() {
 					{/* Gallery */}
 					{gallery && galleryImages && galleryImages.length > 0 && (
 						<div className="mx-auto w-full max-w-[1200px] p-4">
-							{gallery.name && (
-								<h2 className="mb-4 text-xl font-semibold text-white">
-									{gallery.name}
-								</h2>
-							)}
+							<div className="flex flex-row gap-2">
+								<Button
+									variant={"outline"}
+									size={"sm"}
+									className="rounded-full backdrop-blur-2xl cursor-pointer"
+									onClick={() => router.back()}
+								>
+									<ArrowLeft />
+								</Button>
+
+								{gallery.name && (
+									<h2 className="mb-4 text-xl font-semibold text-white">
+										{gallery.name}
+									</h2>
+								)}
+							</div>
 							{gallery.description && (
 								<p className="mb-6 text-white">{gallery.description}</p>
 							)}
