@@ -1,3 +1,5 @@
+import SiteLogo from "@/components/landing/logo";
+import DynamicBackground from "@/components/ui/background";
 import { ThemeProvider } from "@/components/ui/theme-provider";
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
@@ -34,7 +36,16 @@ export default function RootLayout({
 					enableSystem
 					disableTransitionOnChange
 				>
-					{children}
+					<DynamicBackground
+						imageName="Main Background"
+						defaultUrl="/tron-image-2.png"
+						className="bg-background bg-cover justify-center flex h-full min-h-dvh w-full flex-col items-center bg-fixed"
+						overlay={true}
+						overlayOpacity={20}
+					>
+						<SiteLogo />
+						{children}
+					</DynamicBackground>
 				</ThemeProvider>
 			</body>
 		</html>

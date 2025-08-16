@@ -69,6 +69,9 @@ export interface Config {
   collections: {
     users: User;
     media: Media;
+    folders: Folder;
+    galleries: Gallery;
+    staticImages: StaticImage;
     'payload-locked-documents': PayloadLockedDocument;
     'payload-preferences': PayloadPreference;
     'payload-migrations': PayloadMigration;
@@ -77,6 +80,9 @@ export interface Config {
   collectionsSelect: {
     users: UsersSelect<false> | UsersSelect<true>;
     media: MediaSelect<false> | MediaSelect<true>;
+    folders: FoldersSelect<false> | FoldersSelect<true>;
+    galleries: GalleriesSelect<false> | GalleriesSelect<true>;
+    staticImages: StaticImagesSelect<false> | StaticImagesSelect<true>;
     'payload-locked-documents': PayloadLockedDocumentsSelect<false> | PayloadLockedDocumentsSelect<true>;
     'payload-preferences': PayloadPreferencesSelect<false> | PayloadPreferencesSelect<true>;
     'payload-migrations': PayloadMigrationsSelect<false> | PayloadMigrationsSelect<true>;
@@ -159,6 +165,94 @@ export interface Media {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "folders".
+ */
+export interface Folder {
+  id: number;
+  name: string;
+  /**
+   * The URL path for this folder (e.g., 'photography' or 'photography/abstract')
+   */
+  path: string;
+  /**
+   * Image shown when hovering over this folder
+   */
+  previewImage: number | Media;
+  /**
+   * Leave empty if this is a top-level folder
+   */
+  parentFolder?: (number | null) | Folder;
+  folderType: 'folders' | 'gallery';
+  /**
+   * Select a gallery to display (only needed if folder type is 'Contains Gallery')
+   */
+  gallery?: (number | null) | Gallery;
+  /**
+   * Determines the order of display (lower numbers appear first)
+   */
+  order?: number | null;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "galleries".
+ */
+export interface Gallery {
+  id: number;
+  name: string;
+  description?: string | null;
+  /**
+   * Add images to this gallery
+   */
+  images: {
+    image: number | Media;
+    caption?: string | null;
+    /**
+     * Important for accessibility and SEO
+     */
+    alt?: string | null;
+    featured?: boolean | null;
+    /**
+     * Lower numbers appear first
+     */
+    order?: number | null;
+    id?: string | null;
+  }[];
+  layout: 'grid' | 'masonry' | 'carousel';
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * Manage static images like backgrounds and logos
+ *
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "staticImages".
+ */
+export interface StaticImage {
+  id: number;
+  /**
+   * A descriptive name for this image (e.g., 'Main Background', 'Site Logo')
+   */
+  name: string;
+  /**
+   * Alternative text for accessibility
+   */
+  alt: string;
+  updatedAt: string;
+  createdAt: string;
+  url?: string | null;
+  thumbnailURL?: string | null;
+  filename?: string | null;
+  mimeType?: string | null;
+  filesize?: number | null;
+  width?: number | null;
+  height?: number | null;
+  focalX?: number | null;
+  focalY?: number | null;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "payload-locked-documents".
  */
 export interface PayloadLockedDocument {
@@ -171,6 +265,18 @@ export interface PayloadLockedDocument {
     | ({
         relationTo: 'media';
         value: number | Media;
+      } | null)
+    | ({
+        relationTo: 'folders';
+        value: number | Folder;
+      } | null)
+    | ({
+        relationTo: 'galleries';
+        value: number | Gallery;
+      } | null)
+    | ({
+        relationTo: 'staticImages';
+        value: number | StaticImage;
       } | null);
   globalSlug?: string | null;
   user: {
@@ -243,6 +349,61 @@ export interface UsersSelect<T extends boolean = true> {
 export interface MediaSelect<T extends boolean = true> {
   alt?: T;
   caption?: T;
+  updatedAt?: T;
+  createdAt?: T;
+  url?: T;
+  thumbnailURL?: T;
+  filename?: T;
+  mimeType?: T;
+  filesize?: T;
+  width?: T;
+  height?: T;
+  focalX?: T;
+  focalY?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "folders_select".
+ */
+export interface FoldersSelect<T extends boolean = true> {
+  name?: T;
+  path?: T;
+  previewImage?: T;
+  parentFolder?: T;
+  folderType?: T;
+  gallery?: T;
+  order?: T;
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "galleries_select".
+ */
+export interface GalleriesSelect<T extends boolean = true> {
+  name?: T;
+  description?: T;
+  images?:
+    | T
+    | {
+        image?: T;
+        caption?: T;
+        alt?: T;
+        featured?: T;
+        order?: T;
+        id?: T;
+      };
+  layout?: T;
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "staticImages_select".
+ */
+export interface StaticImagesSelect<T extends boolean = true> {
+  name?: T;
+  alt?: T;
   updatedAt?: T;
   createdAt?: T;
   url?: T;

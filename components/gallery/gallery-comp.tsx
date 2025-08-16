@@ -1,14 +1,14 @@
 import { ImageGallery } from "react-image-grid-gallery";
 
-export type imageInGallery = {
+export type ImageInGallery = {
 	id: string;
 	alt: string;
-	caption: string;
+	caption?: string;
 	src: string;
 };
 
 interface GalleryComponentProps {
-	imageGallery: imageInGallery[];
+	imageGallery: ImageInGallery[];
 }
 
 export default function GalleryComponent({
