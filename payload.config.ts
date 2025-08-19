@@ -18,33 +18,38 @@ const filename = fileURLToPath(import.meta.url);
 const dirname = path.dirname(filename);
 
 export default buildConfig({
-	admin: {
-		user: Users.slug,
-		importMap: {
-			baseDir: path.resolve(dirname),
-		},
-	},
-	collections: [Users, Media, Folder, Gallery, StaticImages],
-	editor: lexicalEditor(),
-	secret: process.env.PAYLOAD_SECRET || "",
-	typescript: {
-		outputFile: path.resolve(dirname, "payload-types.ts"),
-	},
-	db: vercelPostgresAdapter({
-		pool: {
-			connectionString: process.env.POSTGRES_URL || "",
-		},
-	}),
-	sharp,
-	plugins: [
-		payloadCloudPlugin(),
-		vercelBlobStorage({
-			token: process.env.BLOB_READ_WRITE_TOKEN!,
-			enabled: true,
-			collections: {
-				media: true,
-				staticImages: true,
-			},
-		}),
-	],
+  admin: {
+    user: Users.slug,
+    importMap: {
+      baseDir: path.resolve(dirname),
+    },
+  },
+  collections: [Users, Media, Folder, Gallery, StaticImages],
+  editor: lexicalEditor(),
+  secret: process.env.PAYLOAD_SECRET || "",
+  typescript: {
+    outputFile: path.resolve(dirname, "payload-types.ts"),
+  },
+  db: vercelPostgresAdapter({
+    pool: {
+      connectionString: process.env.POSTGRES_URL || "",
+    },
+  }),
+  sharp,
+  plugins: [
+    payloadCloudPlugin(),
+    vercelBlobStorage({
+      token: process.env.BLOB_READ_WRITE_TOKEN!,
+      enabled: true,
+      collections: {
+        media: true,
+        staticImages: true,
+      },
+    }),
+  ],
+  upload: {
+    limits: {
+      fieldSize: 209715200,
+    }
+  }
 });
