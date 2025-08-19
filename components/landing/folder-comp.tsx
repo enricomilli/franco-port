@@ -83,6 +83,7 @@ export default function FolderComponent({
           <Image
             width={200}
             height={200}
+            className="max-h-60 w-auto"
             src={
               typeof hoverImgSrc === "string"
                 ? hoverImgSrc
